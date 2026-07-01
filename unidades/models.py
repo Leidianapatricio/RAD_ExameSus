@@ -14,11 +14,13 @@ class Profissional(models.Model):
     nome = models.CharField(max_length=100)
     cpf = models.CharField(max_length=14, unique=True)
     especialidade = models.CharField(max_length=100)
+    telefone = models.CharField(max_length=20, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
 
     unidade = models.ForeignKey(
         UnidadeSaude,
         on_delete=models.CASCADE,
-        related_name='profissionais'
+        related_name="profissionais"
     )
 
     def __str__(self):

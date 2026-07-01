@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import UnidadeSaude, Profissional
 
-# Register your models here.
+admin.site.register(UnidadeSaude)
+admin.site.register(Profissional)
