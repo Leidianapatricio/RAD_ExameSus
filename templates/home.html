@@ -1,118 +1,177 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <section class="container py-5">
+
     <div class="row align-items-center g-5">
 
+        <!-- Lado esquerdo -->
         <div class="col-lg-6">
-            <span class="badge text-bg-success mb-3">Sistema de Saúde Pública</span>
 
-            <h1 class="display-5 fw-bold">
-                ExameSUS: acompanhamento de exames de forma simples e segura
+            <span class="badge bg-success mb-3">
+                Sistema de Saúde Pública
+            </span>
+
+            <h1 class="display-4 fw-bold lh-sm">
+
+                ExameSUS:
+                <br>
+
+                acompanhamento de exames
+                de forma simples e segura
+
             </h1>
 
-            <p class="lead text-muted mt-3">
-                Plataforma digital para facilitar o acesso a agendamentos,
-                resultados, histórico de exames e notificações de acompanhamento
-                no Sistema Único de Saúde.
+            <p class="lead text-muted mt-4">
+
+                Plataforma digital para facilitar o acesso aos
+                agendamentos, resultados, histórico de exames e
+                notificações de acompanhamento no Sistema Único de Saúde.
+
             </p>
 
-            <div class="d-flex gap-3 mt-4">
-                <a href="{% url 'login' %}" class="btn btn-examesus btn-lg px-4">
+            <div class="mt-4">
+
+                <a href="{% url 'core:login' %}"
+                   class="btn btn-examesus btn-lg px-5">
+
                     <i class="bi bi-box-arrow-in-right"></i>
+
                     Entrar no Sistema
+
                 </a>
+
             </div>
+
         </div>
 
+        <!-- Lado direito -->
+
         <div class="col-lg-6">
-            <div class="card card-examesus p-4">
-                <h3 class="fw-bold mb-4">O que o ExameSUS oferece?</h3>
+
+            <div class="card card-examesus shadow-sm p-4">
+
+                <h2 class="fw-bold mb-4">
+
+                    O que o ExameSUS oferece?
+
+                </h2>
 
                 <div class="d-flex gap-3 mb-4">
+
                     <div class="logo-box flex-shrink-0">
+
                         <i class="bi bi-calendar-check"></i>
+
                     </div>
+
                     <div>
-                        <h5 class="fw-bold mb-1">Agendamentos</h5>
+
+                        <h5 class="fw-bold">
+
+                            Agendamentos
+
+                        </h5>
+
                         <p class="text-muted mb-0">
-                            Consulte exames agendados, datas, locais e status.
+
+                            Consulte exames agendados, datas,
+                            locais e situação do atendimento.
+
                         </p>
+
                     </div>
+
                 </div>
 
                 <div class="d-flex gap-3 mb-4">
+
                     <div class="logo-box flex-shrink-0">
+
                         <i class="bi bi-clipboard2-pulse"></i>
+
                     </div>
+
                     <div>
-                        <h5 class="fw-bold mb-1">Resultados e histórico</h5>
+
+                        <h5 class="fw-bold">
+
+                            Resultados e Histórico
+
+                        </h5>
+
                         <p class="text-muted mb-0">
-                            Acompanhe seus exames realizados e resultados anteriores.
+
+                            Consulte resultados e acompanhe todo
+                            o histórico de exames realizados.
+
                         </p>
+
                     </div>
+
                 </div>
 
                 <div class="d-flex gap-3 mb-4">
+
                     <div class="logo-box flex-shrink-0">
+
                         <i class="bi bi-bell"></i>
+
                     </div>
+
                     <div>
-                        <h5 class="fw-bold mb-1">Notificações</h5>
+
+                        <h5 class="fw-bold">
+
+                            Notificações
+
+                        </h5>
+
                         <p class="text-muted mb-0">
-                            Receba lembretes e avisos sobre novos exames de controle.
+
+                            Receba lembretes sobre exames
+                            agendados e novos resultados.
+
                         </p>
+
                     </div>
+
                 </div>
 
                 <div class="d-flex gap-3">
+
                     <div class="logo-box flex-shrink-0">
+
                         <i class="bi bi-shield-check"></i>
+
                     </div>
+
                     <div>
-                        <h5 class="fw-bold mb-1">Acesso seguro</h5>
+
+                        <h5 class="fw-bold">
+
+                            Acesso Seguro
+
+                        </h5>
+
                         <p class="text-muted mb-0">
-                            Login por perfil para cidadão, profissional de saúde e administrador.
+
+                            Ambiente seguro para cidadãos,
+                            profissionais de saúde e administradores.
+
                         </p>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
 
     </div>
+
 </section>
 
-<section class="container pb-5">
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card card-examesus h-100 p-4 text-center">
-                <i class="bi bi-person-vcard display-5 text-primary"></i>
-                <h5 class="fw-bold mt-3">Cidadão</h5>
-                <p class="text-muted">
-                    Acesse seus exames, resultados, histórico e notificações.
-                </p>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card card-examesus h-100 p-4 text-center">
-                <i class="bi bi-person-badge display-5 text-success"></i>
-                <h5 class="fw-bold mt-3">Profissional de Saúde</h5>
-                <p class="text-muted">
-                    Cadastre usuários, agende exames e atualize resultados.
-                </p>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card card-examesus h-100 p-4 text-center">
-                <i class="bi bi-gear display-5 text-primary"></i>
-                <h5 class="fw-bold mt-3">Administrador</h5>
-                <p class="text-muted">
-                    Gerencie unidades, profissionais, usuários e configurações.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
 {% endblock %}

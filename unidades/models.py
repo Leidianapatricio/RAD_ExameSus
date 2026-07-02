@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class UnidadeSaude(models.Model):
@@ -11,11 +12,38 @@ class UnidadeSaude(models.Model):
 
 
 class Profissional(models.Model):
+
+    CONSELHO_CHOICES = [
+        ("CRM", "CRM"),
+        ("COREN", "COREN"),
+        ("CRO", "CRO"),
+        ("CRF", "CRF"),
+        ("CRBM", "CRBM"),
+        ("OUTRO", "Outro"),
+    ]
+
     nome = models.CharField(max_length=100)
     cpf = models.CharField(max_length=14, unique=True)
+
+    conselho = models.CharField(
+        max_length=10,
+        choices=CONSELHO_CHOICES
+    )
+
+    registro = models.CharField(max_length=30)
+
     especialidade = models.CharField(max_length=100)
-    telefone = models.CharField(max_length=20, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
+
+    telefone = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True
+    )
+
+    email = models.EmailField(
+        blank=True,
+        null=True
+    )
 
     unidade = models.ForeignKey(
         UnidadeSaude,
