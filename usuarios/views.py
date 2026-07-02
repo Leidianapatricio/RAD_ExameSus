@@ -45,3 +45,10 @@ def criar_usuario(request):
         return redirect("usuarios:listar")
 
     return render(request, "usuarios/form.html")
+
+def minhas_notificacoes(request):
+
+    return render(
+        request,
+        "usuarios/notificacoes.html"
+    )

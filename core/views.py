@@ -1,11 +1,16 @@
-from unidades.models import UnidadeSaude, Profissional
-from exames.models import Exame, TipoExame
-from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect, render
+
+from exames.models import Exame, TipoExame
+from unidades.models import Profissional, UnidadeSaude
 from usuarios.models import Usuario
 
 
+def limpar_cpf(cpf):
+    if not cpf:
+        return ""
+    return cpf.replace(".", "").replace("-", "").strip()
 
 
 def home(request):
@@ -23,12 +28,14 @@ def login_view(request):
             try:
                 usuario = Usuario.objects.get(cpf=cpf, perfil="CIDADAO")
                 login(request, usuario.user)
+                request.session["perfil"] = "CIDADAO"
                 return redirect("core:dashboard_cidadao")
             except Usuario.DoesNotExist:
                 messages.error(request, "Cidadão não encontrado.")
                 return redirect("core:login")
 
         if perfil_login == "PROFISSIONAL_ADMIN":
+            # Primeiro tenta login como admin usando username + senha
             user = authenticate(
                 request,
                 username=identificador,
@@ -37,9 +44,11 @@ def login_view(request):
 
             if user is not None and user.is_superuser:
                 login(request, user)
+                request.session["perfil"] = "ADMIN"
                 return redirect("core:dashboard_admin")
 
-            cpf_limpo = identificador.replace(".", "").replace("-", "")
+            # Depois tenta login como profissional usando CPF limpo + senha
+            cpf_limpo = limpar_cpf(identificador)
 
             user = authenticate(
                 request,
@@ -49,12 +58,17 @@ def login_view(request):
 
             if user is not None:
                 try:
-                    usuario = Usuario.objects.get(user=user, perfil="PROFISSIONAL")
-                    login(request, user)
-                    return redirect("core:dashboard_profissional")
-                except Usuario.DoesNotExist:
-                    messages.error(request, "Profissional não encontrado.")
-                    return redirect("core:login")
+                    profissional = Profissional.objects.get(cpf=identificador)
+                except Profissional.DoesNotExist:
+                    try:
+                        profissional = Profissional.objects.get(cpf=cpf_limpo)
+                    except Profissional.DoesNotExist:
+                        messages.error(request, "Profissional não encontrado.")
+                        return redirect("core:login")
+
+                login(request, user)
+                request.session["perfil"] = "PROFISSIONAL"
+                return redirect("core:dashboard_profissional")
 
             messages.error(request, "Usuário/CPF ou senha inválidos.")
             return redirect("core:login")
@@ -62,6 +76,7 @@ def login_view(request):
     return render(request, "login.html")
 
 def logout_view(request):
+    request.session.flush()
     logout(request)
     messages.success(request, "Você saiu do sistema.")
     return redirect("core:login")
@@ -79,11 +94,20 @@ def dashboard_admin(request):
 
 
 def dashboard_cidadao(request):
-    return render(request, "dashboard/cidadao.html")
+    usuario = Usuario.objects.filter(user=request.user).first()
 
+    return render(request, "dashboard/cidadao.html", {
+        "usuario": usuario
+    })
 
 def dashboard_profissional(request):
-    return render(request, "dashboard/profissional.html")
+    return render(
+        request,
+        "dashboard/profissional.html",
+        {
+            "perfil": "PROFISSIONAL"
+        }
+    )
 
 
 def relatorios(request):
@@ -98,6 +122,9 @@ def relatorios(request):
 
     if unidade_id:
         exames = exames.filter(unidade_id=unidade_id)
+
+    if tipo_id:
+        exames = exames.filter(tipo_id=tipo_id)
 
     contexto = {
         "total_usuarios": Usuario.objects.count(),
