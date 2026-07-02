@@ -28,13 +28,17 @@
                 <li class="nav-item ms-lg-3">
                     <form action="{% url 'set_language' %}" method="post">
                         {% csrf_token %}
-                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <input type="hidden" name="next" value="{% url 'core:home' %}">
 
                         <select name="language"
                                 class="form-select form-select-sm"
                                 onchange="this.form.submit()">
-                            <option value="pt-br" {% if LANGUAGE == "pt-br" %}selected{% endif %}>PT</option>
-                            <option value="en" {% if LANGUAGE == "en-us" %}selected{% endif %}>EN</option>
+                            <option value="pt-br" {% if LANGUAGE_CODE == "pt-br" %}selected{% endif %}>
+                                PT
+                            </option>
+                            <option value="en" {% if LANGUAGE_CODE == "en" %}selected{% endif %}>
+                                EN
+                            </option>
                         </select>
                     </form>
                 </li>
@@ -62,9 +66,11 @@
                     </li>
 
                 {% else %}
+
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'core:login' %}">Login</a>
                     </li>
+
                 {% endif %}
 
             </ul>
